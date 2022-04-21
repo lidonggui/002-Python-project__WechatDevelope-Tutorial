@@ -372,6 +372,92 @@
 
 8. 到此，配置完毕，重启 apache 服务即可。如有不懂，欢迎留言。
 
+## 出现过的问题与解决办法
+
+1. Apache 无法启动
+
+    1. ![image-20220421102225625](https://gitee.com/lidonggui/typoranotes_or_pictures/raw/master/pictures/image-20220421102225625.png)    
+    2. 问题就出在 `PYTHONHOME` 和 `PYTHONPATH` 。这两个说的是系统 寻找 python 的路径，如果在安装 python 时向系统变量中添加过 pythonprth 和 pythonhome 应该就不会出现这样的问题。
+    3. 解决办法：自己手动向系统环境变量中添加 python 的路径，添加 （1）python 的根目录（2）python 目录下的 Scripts 目录（3）python /lib /site-packages，我添加的是这三个，因为具体是哪个我也不清楚。:happy:
+    4. <img src="https://gitee.com/lidonggui/typoranotes_or_pictures/raw/master/pictures/image-20220421103155094.png" alt="image-20220421103155094" style="zoom: 50%;" />  点击徽标键，直接（不需要光标）输入“环境”即可，选择并打开
+    5. <img src="https://gitee.com/lidonggui/typoranotes_or_pictures/raw/master/pictures/image-20220421103703832.png" alt="image-20220421103703832" style="zoom:67%;" />  
+    6. 按如顺序操作即可，如有不懂，可自行查阅相关资料。（这种的网上教程很多的）
+    7. 注意一点：多个路径之间要用英文的分号 `;` 间隔开。
+    8. 用户变量和下边的系统变量操作同理，这里不再赘述。
+    9. 这么设置之后 apache 应该就可以用了。
+
+2. Apache 可以启动，但是启动后相应的页面无法访问，显示 404 `The requested URL was not found on this server`。
+
+    1. 原因一：`httpd.conf` 文件中的 `Include conf/extra/httpd-vhosts.conf` 未添加注释。
+
+        1. 在文件中找到，然后添加修改即可。
+        2. <img src="https://gitee.com/lidonggui/typoranotes_or_pictures/raw/master/pictures/image-20220421104420727.png" alt="image-20220421104420727" style="zoom:67%;" />  对应如图位置。
+
+    2. 原因二：文件权限设置有问题：
+
+        1. <img src="https://gitee.com/lidonggui/typoranotes_or_pictures/raw/master/pictures/image-20220421104738028.png" alt="image-20220421104738028" style="zoom:67%;" />   
+
+    3. 原因三：这个是我的问题，问题出在我的 `.py` 文件中：
+
+        1. ```python
+            # -*- coding: utf-8 -*-
+            # filename: main.py
+            
+            import os,sys
+            abspath = os.path.dirname(__file__)
+            sys.path.append(abspath)
+            os.chdir(abspath)
+            
+            import web
+            from handle import Handle
+            
+            urls = (
+                
+                '/wx', 'Handle',
+            )
+            
+            class Handle(object):
+                def GET(self):
+                    return "hello, this is handle view"
+            
+            if __name__ == '__main__':
+                app = web.application(urls, globals())	# 这个放错位置了，应该往前放，或者说是在这个 if 语句之外
+                application = app.wsgifunc()	# 同上，放错位置了，这两句话都要有，否则也会出问题 problems 
+                app.run()
+            ```
+
+        2. 正确写法：（仅供参考）
+
+        3. ```python
+            # -*- coding: utf-8 -*-
+            # filename: main.py
+            
+            import os,sys
+            abspath = os.path.dirname(__file__)
+            sys.path.append(abspath)
+            os.chdir(abspath)
+            
+            import web
+            from handle import Handle
+            
+            urls = (
+                
+                '/wx', 'Handle',
+            )
+            
+            app = web.application(urls, globals())
+            application = app.wsgifunc()
+            
+            class Handle(object):
+                def GET(self):
+                    return "hello, this is handle view"
+            
+            if __name__ == '__main__':
+                app.run()
+            ```
+
+3. 这就是我所遇到的问题，如果你还遇到了问题可以上网查找，或者给我留言。Leave me a message ！
+
 
 
 # 微信公众号—实现自动回复：
@@ -474,7 +560,18 @@
                     return Argument
         ```
 
-    2. 消息传送格式：
+    1. 到这里的时候，可以先去连接公众号的接口
+        
+        1. 网址：[公众号 (qq.com)](https://mp.weixin.qq.com/advanced/advanced?action=interface&t=advanced/interface&token=1256988445&lang=zh_CN)
+        2. 登陆自己的公众号之后，找到基本配置并打开
+        3. ![image-20220421105804719](https://gitee.com/lidonggui/typoranotes_or_pictures/raw/master/pictures/image-20220421105804719.png)      
+        4. ![image-20220421110116055](https://gitee.com/lidonggui/typoranotes_or_pictures/raw/master/pictures/image-20220421110116055.png)    
+        5. 如果填写完毕后点击 `提交` 后显示 token 验证失败：常见的问题及解决办法如下：
+            1. python 版本问题：参考链接：[(8条消息) 微信公众平台 token 验证失败 python3_Jason_WangYing的博客-CSDN博客](https://blog.csdn.net/Jason_WangYing/article/details/106268219)
+            2. 国外的服务器（natapp是国内，挺好用的），速度慢，多试几次就好了。
+            3. 还有，但是，我就先不写了，可以上网上自己先查阅一下。
+        
+    3. 消息传送格式：
 
         1. ```xml
             <xml>
@@ -487,14 +584,14 @@
             </xml>
             ```
 
-    3. <img src="https://gitee.com/lidonggui/typoranotes_or_pictures/raw/master/pictures/0" alt="img" style="zoom:67%;" />大致思路
+    4. <img src="https://gitee.com/lidonggui/typoranotes_or_pictures/raw/master/pictures/0" alt="img" style="zoom:67%;" />大致思路
 
-    4. 修改 blog.py 文件
+    5. 修改 blog.py 文件
 
         1. <img src="https://gitee.com/lidonggui/typoranotes_or_pictures/raw/master/pictures/image-20220417150844517.png" alt="image-20220417150844517" style="zoom: 67%;" />  
         2. <img src="https://gitee.com/lidonggui/typoranotes_or_pictures/raw/master/pictures/image-20220417150901636.png" alt="image-20220417150901636" style="zoom:67%;" />  
 
-    5. 增加 handle.py 内容
+    6. 增加 handle.py 内容
 
         1. ```python
             # -*- coding: utf-8 -*-# 
@@ -580,7 +677,7 @@
                         return Argment
             ```
 
-    6. 编辑 receive.py 的内容：
+    7. 编辑 receive.py 的内容：
 
         1. ```python
             import xml.etree.ElementTree as ET
@@ -641,7 +738,7 @@
                     self.Event = xmlData.find('Event').text
             ```
 
-    7. 编辑 reply.py 的内容：
+    8. 编辑 reply.py 的内容：
 
         1. ```python
             # -*- coding: utf-8 -*-#
