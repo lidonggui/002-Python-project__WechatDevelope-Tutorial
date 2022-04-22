@@ -378,12 +378,11 @@
 
     1. ![image-20220421102225625](https://gitee.com/lidonggui/typoranotes_or_pictures/raw/master/pictures/image-20220421102225625.png)    
     2. 问题就出在 `PYTHONHOME` 和 `PYTHONPATH` 。这两个说的是系统 寻找 python 的路径，如果在安装 python 时向系统变量中添加过 pythonprth 和 pythonhome 应该就不会出现这样的问题。
-    3. 解决办法：自己手动向系统环境变量中添加 python 的路径，添加 （1）python 的根目录（2）python 目录下的 Scripts 目录（3）python /lib /site-packages，我添加的是这三个，因为具体是哪个我也不清楚。:happy:
-    4. <img src="https://gitee.com/lidonggui/typoranotes_or_pictures/raw/master/pictures/image-20220421103155094.png" alt="image-20220421103155094" style="zoom: 50%;" />  点击徽标键，直接（不需要光标）输入“环境”即可，选择并打开
-    5. <img src="https://gitee.com/lidonggui/typoranotes_or_pictures/raw/master/pictures/image-20220421103703832.png" alt="image-20220421103703832" style="zoom:67%;" />  
-    6. 按如顺序操作即可，如有不懂，可自行查阅相关资料。（这种的网上教程很多的）
-    7. 注意一点：多个路径之间要用英文的分号 `;` 间隔开。
-    8. 用户变量和下边的系统变量操作同理，这里不再赘述。
+    3. 解决办法：自己手动向系统环境变量中添加 python 的路径（==注意：不要向用户变量中添加==），添加 （1）python 的根目录“\python”（2）python 目录下的 Scripts 目录。:happy:
+    4. <img src="https://gitee.com/lidonggui/typoranotes_or_pictures/raw/master/pictures/image-20220421103155094.png" alt="image-20220421103155094" style="zoom: 50%;" />  点击徽标键，直接（不需要光标）输入“环境”即可。  
+    5. 按如顺序操作即可，如有不懂，可自行查阅相关资料。（这种的网上教程很多的）
+    6. 注意一点：多个路径之间要用英文的分号 `;` 间隔开。
+    7. 用户变量和下边的系统变量操作同理，这里不再赘述。
     9. 这么设置之后 apache 应该就可以用了。
 
 2. Apache 可以启动，但是启动后相应的页面无法访问，显示 404 `The requested URL was not found on this server`。
@@ -561,7 +560,7 @@
         ```
 
     1. 到这里的时候，可以先去连接公众号的接口
-        
+       
         1. 网址：[公众号 (qq.com)](https://mp.weixin.qq.com/advanced/advanced?action=interface&t=advanced/interface&token=1256988445&lang=zh_CN)
         2. 登陆自己的公众号之后，找到基本配置并打开
         3. ![image-20220421105804719](https://gitee.com/lidonggui/typoranotes_or_pictures/raw/master/pictures/image-20220421105804719.png)      
