@@ -469,6 +469,11 @@
 - natapp
 - 微信公众号调试工具 — [[微信公众平台接口调试工具 (qq.com)](https://mp.weixin.qq.com/debug/)]
 - 注册微信公众号
+- 注意：首先检查自己电脑里有没有reply和receive两个python的包，如果有的话就卸载掉（也可以将接下来的所有reply和receive替换成其他名词），没有的话就算了
+    - 检查：在cmd中输入 `pip show reply` 或者 `pip list`，查看结果即可。
+    - 卸载：在cmd中输入 `pip uninstall reply` 即可。
+    - 以“reply”为例，receive同理。
+
 
 ## 操作步骤：
 
