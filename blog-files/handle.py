@@ -5,6 +5,8 @@ import hashlib
 import web
 import reply
 import receive
+# 引入数据库
+import mydb
 
  
 class Handle(object):
@@ -59,6 +61,19 @@ class Handle(object):
                 toUser = recMsg.FromUserName
                 fromUser = recMsg.ToUserName
                 if recMsg.MsgType == 'text':
+                    key = recMsg.Content.decode('utf-8')  
+                    if mydb.mycontent(key):
+                        content = mydb.mycontent(key)  # 关键字回复
+                        replyMsg = reply.TextMsg(toUser, fromUser, content)
+                        return replyMsg.send()
+                    # else:
+                    #   content = robot(key)  # 正常聊天
+                    #   replyMsg = reply.TextMsg(toUser, fromUser, content)
+                    #   return replyMsg.send()
+
+
+                """
+                if recMsg.MsgType == 'text':
                     if recMsg.Content.decode("utf-8") == "test":
                         content = "test Successed"
                     elif recMsg.Content.decode("utf-8") == "testagain":
@@ -67,6 +82,9 @@ class Handle(object):
                         content = "test Failed"
                     replyMsg = reply.TextMsg(toUser, fromUser, content)
                     return replyMsg.send()
+                """
+
+
                 if recMsg.MsgType == 'image':   # return the same image
                     mediaId = recMsg.MediaId
                     replyMsg = reply.ImageMsg(toUser, fromUser, mediaId)
