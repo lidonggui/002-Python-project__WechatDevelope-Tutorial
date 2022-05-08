@@ -20,6 +20,7 @@ class Media(object):
         else:
             buffer = urlResp.read()  # 素材的二进制
             mediaFile = open("get_media.jpg", "wb")
+            # get_media.jpg is the name for the new downloaded image
             mediaFile.write(buffer)
             print("get successful")
 
@@ -28,5 +29,6 @@ if __name__ == '__main__':
     myMedia = Media()
     accessToken = Basic().get_access_token()
     mediaId = "EZ7gWsrgxME62LRm0CibVt9KBAUkY_2zuTKbOOTWlFQoAyiK61DVASryPUhYSWrZ"
+    # here , use your own mediaID
     myMedia.get(accessToken, mediaId)
 
