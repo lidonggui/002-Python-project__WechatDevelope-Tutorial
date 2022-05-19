@@ -8,7 +8,7 @@
 
 1. *第一步*：下载并安装 Apache
 
-    1. Apache下载网址（国内可能需要梯子）：[click here][https://www.apachehaus.com/cgi-bin/download.plx]
+    1. Apache下载网址（国内可能需要梯子）：[click here](https://www.apachehaus.com/cgi-bin/download.plx)
     2. 选择合适的版本下载即可，其中 vc、vs 是 Visual Studio 的版本，下载高版本即可，因为 Visual Studio 是向后兼容的，即，高版本可以正常使用低版本的环境，而低版本不可以在高版本的环境下运行。
 
 2. *第二步*：简单配置 Apache
